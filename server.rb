@@ -22,30 +22,29 @@ team_info.each do |row|
   end
 end
 
-
 win_record = Hash.new 0
 
- winners.each do |team|
+winners.each do |team|
   win_record[team] += 1
 end
 
 ###############################
-#      Find lossers
+#      Find losers
 ###############################
 
-lossers = []
+losers = []
 
 team_info.each do |row|
   if row[:home_score] < row[:away_score]
-    lossers << row[:home_team]
+    losers << row[:home_team]
   elsif row[:away_score] < row[:home_score]
-    lossers << row[:away_team]
+    losers << row[:away_team]
   end
 end
 
 loss_record = Hash.new 0
 
-lossers.each do |team|
+losers.each do |team|
   loss_record[team] += 1
 end
 
@@ -53,12 +52,14 @@ end
 #       METHODS
 ###############################
 
-def pic_team (array)
+def pic_team(array)
   teams = []
-    array.each do |row|
-      teams << row[:home_team]
-      teams << row[:away_team]
-    end
+
+  array.each do |row|
+    teams << row[:home_team]
+    teams << row[:away_team]
+  end
+
   teams.uniq!
 end
 
@@ -91,7 +92,7 @@ end
 get '/leaderboard' do
   @team = pic_team(team_info)
   @win_record = win_record
-  @loss_record= loss_record
+  @loss_record = loss_record
   erb :leaderboard
 end
 

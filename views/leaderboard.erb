@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -8,16 +7,13 @@
 
   <body>
     <h1>Welcome to the Mini NFL Leaderboard</h1>
-    <ul>
+
     <h3>Here are the updates thus far:</h3>
 
-    <h2><% @team.each do |team| %>
-      <li><%=team%> W's: <%=@win_record[team]%> L's: <%=@loss_record[team]%> </li>
-    <% end %></h2>
-
-
-
-
+    <ul>
+      <% @team.each do |team| %>
+        <li><%= team %> W's: <%= @win_record[team] %> L's: <%= @loss_record[team] %></li>
+      <% end %>
     </ul>
   </body>
 </html>
