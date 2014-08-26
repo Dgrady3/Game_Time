@@ -52,10 +52,10 @@ end
 #       METHODS
 ###############################
 
-def pic_team(array)
+def team_list(game_data)
   teams = []
 
-  array.each do |row|
+  game_data.each do |row|
     teams << row[:home_team]
     teams << row[:away_team]
   end
@@ -90,7 +90,7 @@ end
 #       GET BLOCS
 ###############################
 get '/leaderboard' do
-  @team = pic_team(team_info)
+  @teams = team_list(team_info)
   @win_record = win_record
   @loss_record = loss_record
   erb :leaderboard

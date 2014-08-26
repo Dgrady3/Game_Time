@@ -10,7 +10,7 @@
     <h3>Here are the updates thus far:</h3>
 
     <ul>
-      <% @team.each do |team| %>
+      <% @teams.each do |team| %>
         <li><%= team %> W's: <%= @win_record[team] %> L's: <%= @loss_record[team] %></li>
       <% end %>
     </ul>
