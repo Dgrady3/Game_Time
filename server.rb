@@ -3,62 +3,76 @@ require 'pry'
 require 'sinatra'
 require 'sinatra/reloader'
 
-team_info = []
-CSV.foreach('Workbook1.csv',headers:true,header_converters: :symbol, converters: :numeric) do |row|
-  team_info << row.to_hash
+def load_game_data
+  game_data = []
+
+  CSV.foreach('Workbook1.csv', headers:true, header_converters: :symbol, converters: :numeric) do |row|
+    game_data << row.to_hash
+  end
+
+  game_data
 end
 
 ###############################
 #       Find Winners
 ###############################
 
-winners = []
+def win_records(game_data)
+  winners = []
 
-team_info.each do |row|
-  if row[:home_score] > row[:away_score]
-    winners << row[:home_team]
-  elsif row[:away_score] > row[:home_score]
-    winners << row[:away_team]
+  game_data.each do |game|
+    if game[:home_score] > game[:away_score]
+      winners << game[:home_team]
+    elsif game[:away_score] > game[:home_score]
+      winners << game[:away_team]
+    end
   end
-end
 
+  win_record = Hash.new(0)
 
-win_record = Hash.new 0
+  winners.each do |team|
+    win_record[team] += 1
+  end
 
- winners.each do |team|
-  win_record[team] += 1
+  win_record
 end
 
 ###############################
-#      Find lossers
+#      Find losers
 ###############################
 
-lossers = []
+def loss_records(game_data)
+  losers = []
 
-team_info.each do |row|
-  if row[:home_score] < row[:away_score]
-    lossers << row[:home_team]
-  elsif row[:away_score] < row[:home_score]
-    lossers << row[:away_team]
+  game_data.each do |game|
+    if game[:home_score] < game[:away_score]
+      losers << game[:home_team]
+    elsif game[:away_score] < game[:home_score]
+      losers << game[:away_team]
+    end
   end
-end
 
-loss_record = Hash.new 0
+  loss_record = Hash.new(0)
 
-lossers.each do |team|
-  loss_record[team] += 1
+  losers.each do |team|
+    loss_record[team] += 1
+  end
+
+  loss_record
 end
 
 ###############################
 #       METHODS
 ###############################
 
-def pic_team (array)
+def team_list(game_data)
   teams = []
-    array.each do |row|
-      teams << row[:home_team]
-      teams << row[:away_team]
-    end
+
+  game_data.each do |game|
+    teams << game[:home_team]
+    teams << game[:away_team]
+  end
+
   teams.uniq!
 end
 
@@ -89,9 +103,11 @@ end
 #       GET BLOCS
 ###############################
 get '/leaderboard' do
-  @team = pic_team(team_info)
-  @win_record = win_record
-  @loss_record= loss_record
+  game_data = load_game_data
+
+  @teams = team_list(game_data)
+  @win_record = win_records(game_data)
+  @loss_record = loss_records(game_data)
   erb :leaderboard
 end
 
