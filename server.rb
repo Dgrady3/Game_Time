@@ -4,7 +4,7 @@ require 'sinatra'
 require 'sinatra/reloader'
 
 team_info = []
-CSV.foreach('Workbook1.csv',headers:true,header_converters: :symbol, converters: :numeric) do |row|
+CSV.foreach('Workbook1.csv', headers:true, header_converters: :symbol, converters: :numeric) do |row|
   team_info << row.to_hash
 end
 
@@ -22,7 +22,7 @@ team_info.each do |row|
   end
 end
 
-win_record = Hash.new 0
+win_record = Hash.new(0)
 
 winners.each do |team|
   win_record[team] += 1
@@ -42,7 +42,7 @@ team_info.each do |row|
   end
 end
 
-loss_record = Hash.new 0
+loss_record = Hash.new(0)
 
 losers.each do |team|
   loss_record[team] += 1
